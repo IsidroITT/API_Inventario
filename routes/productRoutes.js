@@ -5,7 +5,7 @@ const router = express.Router();
 let products = [];
 
 router.post("/", (req, res) => {
-  const { nombre, precio, descripcion, cantidad } = req.body;
+  let { nombre, precio, descripcion, cantidad } = req.body;
   const newProduct = new product(products.length + 1, nombre, precio, descripcion, cantidad);
 
   products.push(newProduct);
