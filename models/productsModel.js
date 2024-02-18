@@ -1,9 +1,9 @@
 module.exports = class product{
-    constructor(id, nombre, precio, descripcion, cantidad){
+    constructor(id, name, price, description, stock){
         this.id = id,
-        this.nombre = nombre,
-        this.precio = precio,
-        this.descripcion = descripcion,
-        this.cantidad = cantidad
+        this.name = name,
+        this.price = price,
+        this.description = description,
+        this.stock = stock
     }
 }
