@@ -16,10 +16,10 @@ router.get("/:id", (req, res) => {
     res.status(404).json({ message: "Product not found" });
   }
 
-  return res.status(200).json(product);
+  res.status(200).json(product);
 });
 
-router.get("/search", (req, res) => {
+router.get("/search/:name", (req, res) => {
   const { name } = req.query;
   const product = productController.getProductByName(name);
 
@@ -27,7 +27,7 @@ router.get("/search", (req, res) => {
     res.status(404).json({ message: "Product not found" });
   }
 
-  return res.status(200).json(product);
+  res.status(200).json(product);
 });
 
 // -----------------------------------------------------

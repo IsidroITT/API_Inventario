@@ -9,7 +9,7 @@ function generateToken(user){
 }
 
 function verifyToken(token) {
-    const secretKey = 'key-task';
+    const secretKey = 'key-service';
      try {
         const decide = jwt.verify(token, secretKey);
         return decide;
