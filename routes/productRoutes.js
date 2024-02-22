@@ -8,26 +8,69 @@ router.get("/", (req, res) => {
   res.status(200).json(productController.getProducts());
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-  const product = productController.getProductById(id);
+router.get("/inventory", (req, res) =>{
+  const totalInventory = productController.totalInventory();
 
-  if (product) {
+  if(!totalInventory){
+    res.status(400).json({ message: "Empty inventory"});
+  }
+
+  return res.status(200).json({ "Total inventory": totalInventory });
+});
+
+router.get("/search/:name", (req, res) => {
+  const { name } = req.params;
+  const product = productController.getProductByName(name);
+
+  if (!product) {
     res.status(404).json({ message: "Product not found" });
   }
 
   res.status(200).json(product);
 });
 
-router.get("/search/:name", (req, res) => {
-  const { name } = req.query;
-  const product = productController.getProductByName(name);
+router.get("/order/:orderParam", (req, res) => {
+  const { orderParam } = req.params;
+  const order = productController.sortProductsByPrice(orderParam);
 
-  if (product) {
+  if(!order){
+    res.status(400).json({ message: "Empty inventory"});
+  }
+
+  return res.status(200).json(order);
+});
+
+router.get("/filterPrice/:price", (req, res) => {
+  const { price } = req.params;
+  const filter = productController.filterProductsByPrice(price);
+
+  if(!filter){
+    res.status(400).json({ message: "Empty inventory"});
+  }
+
+  return res.status(200).json(filter);
+});
+
+router.get("/filterStock/:stock", (req, res) => {
+  const { stock } = req.params;
+  const filter = productController.filterProductsByStock(stock);
+
+  if(!filter){
+    res.status(400).json({ message: "Empty inventory"});
+  }
+
+  return res.status(200).json(filter);
+});
+
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  const product = productController.getProductById(id);
+
+  if (!product) {
     res.status(404).json({ message: "Product not found" });
   }
 
-  res.status(200).json(product);
+  res.status(200).json({product});
 });
 
 // -----------------------------------------------------
@@ -65,49 +108,5 @@ router.delete("/:id", (req, res) => {
   return res.status(200).json(deletedProduct);
 });
 
-// -----------------------------------------------------
-// Additional routes
-router.get("/inventory", (req, res) =>{
-  const totalInventory = productController.totalInventory();
-
-  if(!totalInventory){
-    res.status(400).json({ message: "Empty inventory"});
-  }
-
-  return res.status(200).json({ "Total inventory": totalInventory });
-});
-
-router.get("/search/:order", (req, res) => {
-  const { orderParam } = req.params;
-  const order = productController.orderByPrice(orderParam);
-
-  if(!order){
-    res.status(400).json({ message: "Empty inventory"});
-  }
-
-  return res.status(200).json(order);
-});
-
-router.get("/filter/:price", (req, res) => {
-  const { priceParam } = req.params;
-  const filter = productController.filterByPrice(priceParam);
-
-  if(!filter){
-    res.status(400).json({ message: "Empty inventory"});
-  }
-
-  return res.status(200).json(filter);
-});
-
-router.get("/filter/:stock", (req, res) => {
-  const { stockParam } = req.params;
-  const filter = productController.filterByStock(stockParam);
-
-  if(!filter){
-    res.status(400).json({ message: "Empty inventory"});
-  }
-
-  return res.status(200).json(filter);
-});
 
 module.exports = router
